@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Te Puka Loloa — System Capacities</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Questrial&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --ocean:       #0A1628;
+  --deep:        #0b1c30;
+  --panel:       #0e2038;
+  --teal:        #0d7377;
+  --teal-b:      #14b8b6;
+  --teal-dim:    rgba(20,184,182,0.12);
+  --teal-glow:   rgba(20,184,182,0.25);
+  --gold:        #c9a84c;
+  --gold-l:      #f0cc6e;
+  --gold-dim:    rgba(201,168,76,0.15);
+  --coral:       #e05c3a;
+  --coral-dim:   rgba(224,92,58,0.15);
+  --mist:        #8ba3b8;
+  --muted:       #4a6278;
+  --border:      rgba(20,184,182,0.18);
+  --border-gold: rgba(201,168,76,0.22);
+  --white:       #edeae2;
+  --font:        'Questrial', sans-serif;
+  --mono:        'IBM Plex Mono', monospace;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; overflow:hidden; }
+
+body {
+  background: var(--ocean);
+  color: var(--white);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.65;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+body::before {
+  content:'';
+  position:fixed; inset:0;
+  background:
+    radial-gradient(ellipse 80% 50% at 15% 85%, rgba(13,115,119,0.14) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 40% at 85% 15%, rgba(20,184,182,0.07) 0%, transparent 50%);
+  pointer-events:none; z-index:0;
+}
+
+body::after {
+  content:'';
+  position:fixed; inset:0;
+  background-image:
+    linear-gradient(rgba(20,184,182,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(20,184,182,0.025) 1px, transparent 1px);
+  background-size: 52px 52px;
+  pointer-events:none; z-index:0;
+}
+
+.page {
+  position:relative; z-index:1;
+  max-width:1080px; margin:0 auto;
+  padding:60px 28px 100px;
+}
+
+/* HEADER */
+.header { margin-bottom:48px; animation:fadeUp 0.5s ease both; text-align:center; }
+
+.eyebrow {
+  font-family:var(--mono);
+  font-size:10px; letter-spacing:0.28em;
+  text-transform:uppercase; color:var(--teal-b);
+  margin-bottom:14px;
+  display:flex; align-items:center; justify-content:center; gap:10px;
+}
+.eyebrow::before, .eyebrow::after {
+  content:''; display:block;
+  width:28px; height:1px;
+  background:var(--teal-b); opacity:0.6;
+}
+
+.header h1 {
+  font-family:var(--font);
+  font-size:clamp(28px,4.5vw,48px);
+  font-weight:400;
+  color:var(--white); line-height:1.1;
+  margin-bottom:14px; letter-spacing:-0.01em;
+}
+.header h1 em { font-style:normal; color:var(--teal-b); }
+
+.header p { font-size:14px; color:var(--mist); max-width:600px; line-height:1.75; margin:0 auto; }
+
+/* SEARCH */
+.search-wrap {
+  position:relative; margin-bottom:32px;
+  animation:fadeUp 0.5s 0.08s ease both;
+  display:flex; align-items:center; justify-content:center;
+}
+.search-input {
+  width:420px; max-width:90vw;
+  background:rgba(14,32,56,0.85);
+  border:1px solid var(--border); border-radius:8px;
+  padding:11px 16px 11px 44px;
+  font-family:var(--font); font-size:13.5px; color:var(--white);
+  outline:none; transition:border-color 0.2s, box-shadow 0.2s;
+}
+.search-input::placeholder { color:var(--muted); }
+.search-input:focus { border-color:var(--teal-b); box-shadow:0 0 0 3px var(--teal-dim); }
+.search-icon {
+  position:absolute; left:15px; top:50%;
+  transform:translateY(-50%);
+  color:var(--muted); font-size:15px; pointer-events:none;
+}
+.search-meta {
+  display:inline-block; margin-left:12px;
+  font-family:var(--mono); font-size:9.5px; letter-spacing:0.12em;
+  color:var(--muted); vertical-align:middle; transition:color 0.2s;
+}
+.search-meta.active { color:var(--teal-b); }
+
+/* TABS */
+.tab-bar {
+  display:flex; flex-wrap:wrap; gap:2px;
+  border-bottom:1px solid var(--border);
+  animation:fadeUp 0.5s 0.12s ease both;
+}
+.tab-btn {
+  font-family:var(--font); font-size:13px;
+  color:var(--muted); background:none; border:none;
+  border-bottom:2px solid transparent; margin-bottom:-1px;
+  padding:12px 18px; cursor:pointer;
+  display:flex; align-items:center; gap:7px;
+  transition:color 0.2s, border-color 0.2s; white-space:nowrap;
+}
+.tab-btn .ti { font-size:13px; }
+.tab-btn:hover { color:var(--mist); }
+.tab-btn.active { color:var(--teal-b); border-bottom-color:var(--teal-b); }
+
+/* PANELS */
+.tab-panel {
+  display:none;
+  background:rgba(11,28,48,0.78);
+  border:1px solid var(--border); border-top:none;
+  border-radius:0 0 14px 14px;
+  padding:40px 36px;
+  backdrop-filter:blur(12px);
+}
+.tab-panel.active { display:block; animation:panelIn 0.28s ease both; }
+
+@keyframes panelIn {
+  from { opacity:0; transform:translateY(8px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(14px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* STAT BAND */
+.stat-band {
+  display:flex; flex-wrap:wrap;
+  border:1px solid var(--border-gold); border-radius:10px;
+  overflow:hidden; margin-bottom:36px;
+  background:linear-gradient(135deg,rgba(8,19,31,0.92),rgba(14,32,56,0.7));
+}
+.stat-cell {
+  flex:1; min-width:100px; padding:20px 16px;
+  text-align:center; border-right:1px solid rgba(201,168,76,0.12);
+  cursor:default; transition:background 0.2s;
+}
+.stat-cell:last-child { border-right:none; }
+.stat-cell:hover { background:rgba(201,168,76,0.06); }
+.stat-val {
+  font-family:var(--font); font-size:21px; color:var(--teal-b);
+  display:block; line-height:1; margin-bottom:5px;
+  transition:color 0.2s;
+}
+.stat-cell:hover .stat-val { color:var(--gold-l); }
+.stat-lbl {
+  font-family:var(--mono); font-size:9px;
+  letter-spacing:0.16em; text-transform:uppercase; color:var(--muted);
+}
+
+/* PROGRESS BARS */
+.progress-row { display:flex; flex-direction:column; gap:6px; margin-bottom:18px; }
+.progress-row-header { display:flex; justify-content:space-between; align-items:baseline; }
+.progress-label { font-family:var(--mono); font-size:9.5px; letter-spacing:0.14em; text-transform:uppercase; color:var(--mist); }
+.progress-val   { font-family:var(--font); font-size:13px; color:var(--teal-b); }
+.progress-track { height:4px; background:rgba(255,255,255,0.05); border-radius:2px; overflow:hidden; }
+.progress-fill  { height:100%; border-radius:2px; width:0%; transition:width 1.1s cubic-bezier(0.4,0,0.2,1); }
+.fill-teal  { background:linear-gradient(90deg,var(--teal),var(--teal-b)); }
+.fill-gold  { background:linear-gradient(90deg,var(--gold),var(--gold-l)); }
+.fill-coral { background:linear-gradient(90deg,#a03000,var(--coral)); }
+
+/* SPEC GROUPS */
+.spec-group { margin-bottom:34px; }
+.spec-group:last-child { margin-bottom:0; }
+
+.spec-group-title {
+  font-family:var(--font); font-size:11.5px;
+  letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--gold-l); margin-bottom:16px;
+  padding-bottom:10px; border-bottom:1px solid var(--border-gold);
+  display:flex; align-items:center; gap:9px;
+  cursor:pointer; user-select:none; transition:color 0.2s;
+}
+.spec-group-title:hover { color:var(--gold); }
+.spec-group-title .icon { font-size:14px; }
+.grp-toggle { margin-left:auto; font-family:var(--mono); font-size:11px; color:var(--muted); transition:transform 0.3s, color 0.2s; }
+.spec-group-title:hover .grp-toggle { color:var(--teal-b); }
+.spec-group.collapsed .grp-toggle { transform:rotate(-90deg); }
+
+.spec-group-body {
+  max-height:2400px; opacity:1;
+  overflow:hidden;
+  transition:max-height 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.3s;
+}
+.spec-group.collapsed .spec-group-body { max-height:0; opacity:0; }
+
+/* SPEC GRID & ROWS */
+.spec-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:8px; }
+
+.spec-row {
+  display:flex; flex-direction:column; gap:3px;
+  padding:13px 15px;
+  background:rgba(8,19,31,0.5);
+  border:1px solid rgba(20,184,182,0.11);
+  border-radius:7px; cursor:pointer;
+  transition:border-color 0.2s, background 0.2s, transform 0.15s;
+  position:relative; overflow:hidden;
+}
+.spec-row::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:1px;
+  background:linear-gradient(90deg,transparent,var(--teal-b),transparent);
+  opacity:0; transition:opacity 0.2s;
+}
+.spec-row:hover { border-color:rgba(20,184,182,0.38); background:rgba(14,32,56,0.72); transform:translateY(-1px); }
+.spec-row:hover::before { opacity:1; }
+.spec-row.full { grid-column:1/-1; }
+.spec-row.gold-hi { border-color:rgba(201,168,76,0.28); background:rgba(201,168,76,0.04); }
+.spec-row.gold-hi:hover { border-color:rgba(201,168,76,0.55); }
+
+.spec-label { font-family:var(--mono); font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); }
+.spec-value { font-size:13.5px; color:var(--white); line-height:1.45; }
+.spec-value .hi      { color:var(--teal-b); }
+.spec-value .hi-gold { color:var(--gold-l); }
+
+/* copy hint */
+.spec-row:hover::after {
+  content:'⎘';
+  position:absolute; bottom:6px; right:9px;
+  font-family:var(--mono); font-size:9px; color:var(--teal-b); opacity:0.5;
+}
+
+/* TABLE */
+.spec-table { width:100%; border-collapse:collapse; font-size:13px; margin-top:4px; }
+.spec-table th {
+  font-family:var(--mono); font-size:9px; letter-spacing:0.15em;
+  text-transform:uppercase; color:var(--muted);
+  padding:9px 13px; text-align:left;
+  border-bottom:1px solid var(--border);
+  background:rgba(8,19,31,0.45);
+}
+.spec-table th.sortable { cursor:pointer; user-select:none; }
+.spec-table th.sortable:hover { color:var(--teal-b); }
+.s-arrow { margin-left:4px; opacity:0.35; display:inline-block; }
+.s-arrow.asc  { opacity:1; }
+.s-arrow.desc { opacity:1; transform:scaleY(-1); }
+
+.spec-table td {
+  padding:10px 13px; color:var(--white);
+  border-bottom:1px solid rgba(20,184,182,0.07);
+  vertical-align:top; line-height:1.5;
+}
+.spec-table tbody tr { cursor:pointer; }
+.spec-table tbody tr:hover td { background:rgba(20,184,182,0.07); }
+.spec-table tbody tr:last-child td { border-bottom:none; }
+.spec-table td:first-child { font-family:var(--mono); font-size:11px; color:var(--teal-b); white-space:nowrap; }
+
+/* TIER BLOCKS */
+.tier-block { margin-bottom:12px; border:1px solid var(--border); border-radius:9px; overflow:hidden; }
+.tier-header {
+  padding:12px 18px; font-family:var(--font); font-size:13px;
+  display:flex; align-items:center; gap:8px;
+  cursor:pointer; user-select:none; transition:opacity 0.2s;
+}
+.tier-header:hover { opacity:0.85; }
+.tier-header.critical    { background:rgba(224,92,58,0.15); color:#f08060; border-bottom:1px solid rgba(224,92,58,0.2); }
+.tier-header.priority    { background:rgba(201,168,76,0.12); color:var(--gold-l); border-bottom:1px solid rgba(201,168,76,0.2); }
+.tier-header.nonessential{ background:rgba(74,98,120,0.15); color:var(--mist); border-bottom:1px solid rgba(74,98,120,0.2); }
+.tier-toggle { margin-left:auto; font-family:var(--mono); font-size:11px; transition:transform 0.3s; }
+.tier-block.collapsed .tier-toggle { transform:rotate(-90deg); }
+.tier-body {
+  padding:10px 18px;
+  max-height:600px; overflow:hidden;
+  transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1), padding 0.3s;
+}
+.tier-block.collapsed .tier-body { max-height:0; padding-top:0; padding-bottom:0; }
+
+.tier-row-item {
+  display:grid; grid-template-columns:2fr 2fr auto;
+  align-items:center; padding:8px 0;
+  border-bottom:1px solid rgba(20,184,182,0.06); gap:12px;
+  transition:background 0.15s;
+}
+.tier-row-item:last-child { border-bottom:none; }
+.tier-row-item:hover { background:rgba(20,184,182,0.04); border-radius:4px; padding-left:6px; }
+.tier-component { font-size:13px; color:var(--white); }
+.tier-purpose   { font-size:12px; color:var(--mist); }
+.tier-status {
+  font-family:var(--mono); font-size:9px; letter-spacing:0.1em;
+  text-transform:uppercase; padding:3px 9px; border-radius:3px;
+  text-align:center; white-space:nowrap;
+}
+.s-on  { background:rgba(20,184,182,0.18); color:var(--teal-b); border:1px solid rgba(20,184,182,0.3); }
+.s-lim { background:rgba(201,168,76,0.14); color:var(--gold-l); border:1px solid rgba(201,168,76,0.25); }
+.s-off { background:rgba(74,98,120,0.14); color:var(--mist);   border:1px solid rgba(74,98,120,0.2); }
+
+/* NOTE BOX */
+.note-box {
+  background:rgba(20,184,182,0.07); border-left:3px solid var(--teal-b);
+  border-radius:0 7px 7px 0; padding:14px 18px;
+  font-size:13px; color:var(--mist); line-height:1.75;
+  margin-top:16px;
+}
+.note-box.gold  { background:rgba(201,168,76,0.07); border-left-color:var(--gold-l); }
+.note-box.coral { background:var(--coral-dim); border-left-color:var(--coral); }
+.note-box strong { color:var(--teal-b); }
+.note-box.gold  strong { color:var(--gold-l); }
+.note-box.coral strong { color:#f08060; }
+
+/* VM NODE TITLE */
+.vm-node-title {
+  font-family:var(--mono); font-size:10px; letter-spacing:0.16em;
+  text-transform:uppercase; color:var(--teal-b);
+  padding:7px 13px; background:rgba(20,184,182,0.09);
+  border-left:3px solid var(--teal-b); border-radius:0 5px 5px 0;
+  margin-bottom:8px; margin-top:20px;
+}
+
+/* SOURCE TAG */
+.source-tag {
+  display:inline-block; font-family:var(--mono); font-size:9px;
+  letter-spacing:0.12em; color:var(--muted);
+  padding:4px 10px; border:1px solid rgba(74,98,120,0.25);
+  border-radius:3px; margin-top:28px;
+}
+
+/* SEARCH HIGHLIGHT */
+mark { background:rgba(201,168,76,0.32); color:var(--gold-l); border-radius:2px; padding:0 1px; }
+
+.spec-row.hidden     { display:none; }
+.spec-group.grp-hide { display:none; }
+
+/* COPY TOAST */
+.copy-toast {
+  position:fixed; bottom:28px; left:50%; transform:translateX(-50%);
+  background:var(--teal); color:var(--white);
+  font-family:var(--mono); font-size:11px; letter-spacing:0.12em;
+  padding:8px 20px; border-radius:6px;
+  pointer-events:none; opacity:0;
+  transition:opacity 0.22s; z-index:200;
+}
+.copy-toast.show { opacity:1; }
+
+/* RESPONSIVE */
+@media (max-width:640px) {
+  .page { padding:36px 16px 70px; }
+  .tab-panel { padding:24px 16px; }
+  .tab-btn { padding:10px 11px; font-size:12px; }
+  .tab-btn .ti { display:none; }
+  .stat-cell { min-width:80px; padding:14px 8px; }
+  .stat-val  { font-size:17px; }
+  .tier-purpose { display:none; }
+  .tier-row-item { grid-template-columns:2fr auto; }
+  .spec-grid { grid-template-columns:1fr; }
+  .search-input { width:100%; max-width:90vw; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- SEARCH -->
+<div class="search-wrap">
+  <span class="search-icon">⌕</span>
+  <input class="search-input" id="searchInput" type="text" placeholder="Search specs — battery, LTE, Guardian, kWh…" autocomplete="off">
+  <span class="search-meta" id="searchMeta"></span>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="eyebrow">Te Puka Loloa · White Paper v1.1 · April 2025</div>
+  <h1>System <em>Capacities</em></h1>
+  <p>Full engineering specifications for the Hybrid Communications Node — the civic and technical backbone of Tuvalu's sovereign digital infrastructure. Click any spec row to copy. Click section titles to collapse.</p>
+</div>
+
+<!-- TABS -->
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('power',this)"><span class="ti">⚡</span> Power</button>
+  <button class="tab-btn" onclick="showTab('structural',this)"><span class="ti">🏗️</span> Structural</button>
+  <button class="tab-btn" onclick="showTab('comms',this)"><span class="ti">📡</span> Communications</button>
+  <button class="tab-btn" onclick="showTab('compute',this)"><span class="ti">🖥️</span> Compute</button>
+  <button class="tab-btn" onclick="showTab('civic',this)"><span class="ti">🏛️</span> Civic</button>
+  <button class="tab-btn" onclick="showTab('storm',this)"><span class="ti">🌀</span> Storm Mode</button>
+  <button class="tab-btn" onclick="showTab('stewardship',this)"><span class="ti">🌱</span> Stewardship</button>
+</div>
+
+<!-- ═══════════ POWER ═══════════ -->
+<div id="panel-power" class="tab-panel active">
+  <div class="stat-band">
+    <div class="stat-cell" title="16 × 400W monocrystalline panels, 4S4P configuration"><span class="stat-val" data-count="6.4" data-suffix=" kW">–</span><span class="stat-lbl">Solar Array</span></div>
+    <div class="stat-cell" title="4 × 3.5 kWh lithium iron phosphate, 90% depth of discharge"><span class="stat-val" data-count="14" data-suffix=" kWh">–</span><span class="stat-lbl">Battery Usable</span></div>
+    <div class="stat-cell" title="Hybrid inverter, pure sine wave, >94% efficiency"><span class="stat-val" data-count="5000" data-suffix="W">–</span><span class="stat-lbl">Inverter</span></div>
+    <div class="stat-cell"><span class="stat-val">24 hr</span><span class="stat-lbl">Off-Grid Runtime</span></div>
+    <div class="stat-cell"><span class="stat-val">3–4 hr</span><span class="stat-lbl">Full Recharge</span></div>
+    <div class="stat-cell"><span class="stat-val">26–32</span><span class="stat-lbl">kWh/day Harvest</span></div>
+  </div>
+
+  <!-- Energy balance bars -->
+  <div class="spec-group">
+    <div class="spec-group-title" onclick="toggleGroup(this)"><span class="icon">📊</span> Daily Energy Balance <span class="grp-toggle">▾</span></div>
+    <div class="spec-group-body">
+      <div class="progress-row"><div class="progress-row-header"><span class="progress-label">Solar Harvest (avg)</span><span class="progress-val">26–32 kWh/day</span></div><div class="progress-track"><div class="progress-fill fill-teal" data-w="100"></div></div></div>
+      <div class="progress-row"><div class="progress-row-header"><span class="progress-label">Battery Usable Capacity</span><span class="progress-val">14.0 kWh</span></div><div class="progress-track"><div class="progress-fill fill-teal" data-w="52"></div></div></div>
+      <div class="progress-row"><div class="progress-row-header"><span class="progress-label">Typical Daily Consumption</span><span class="progress-val">10.5–12.5 kWh</span></div><div class="progress-track"><div class="progress-fill fill-gold" data-w="43"></div></div></div>
+      <div class="progress-row"><div class="progress-row-header"><span class="progress-label">Core Compute Load (24 hr)</span><span class="progress-val">8.0–9.6 kWh</span></div><div class="progress-track"><div class="progress-fill fill-gold" data-w="33"></div></div></div>
+      <div class="progress-row"><div class="progress-row-header"><span class="progress-label">HVAC Load (6 hr active)</span><span class="progress-val">1.5–3.0 kWh</span></div><div class="progress-track"><div class="progress-fill fill-coral" data-w="10"></div></div></div>
+      <div class="note-box" style="margin-top:14px;"><strong>Surplus:</strong> The system generates 2–3× its daily energy needs. 14 kWh battery buffer ensures 24-hour off-grid continuity even in poor sunlight conditions.</div>
+    </div>
+  </div>
+
+  <div class="spec-group">
+    <div class="spec-group-title" onclick="toggleGroup(this)"><span class="icon">☀️</span> Solar Generation <span class="grp-toggle">▾</span></div>
+    <div class="spec-group-body"><div class="spec-grid">
+      <div class="spec-row gold-hi" onclick="copyRow(this)"><span class="spec-label">Total Capacity</span><span class="spec-value"><span class="hi">6.4 kW</span></span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Panel Configuration</span><span class="spec-value">16 × 400W monocrystalline modules</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Array Structure</span><span class="spec-value">4S4P — 4 panels in series × 4 parallel strings</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Panel Efficiency</span><span class="spec-value">Min. 21% — salt exposure & cyclone rated</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Wind Rating</span><span class="spec-value">Up to 220 km/h on retractable steel frame</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Mounting Pitch</span><span class="spec-value">15–20° tropical optimisation, fold-flat hinge option</span></div>
+      <div class="spec-row gold-hi" onclick="copyRow(this)"><span class="spec-label">MPPT Controllers</span><span class="spec-value"><span class="hi">Dual</span> — 250V / 100A each</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Max MPPT Throughput</span><span class="spec-value">~5.8 kW</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Daily Harvest (Tuvalu)</span><span class="spec-value"><span class="hi">25–32 kWh/day</span></span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Rainwater Integration</span><span class="spec-value">Canopy drainage gutters → cistern below</span></div>
+    </div></div>
+  </div>
+
+  <div class="spec-group">
+    <div class="spec-group-title" onclick="toggleGroup(this)"><span class="icon">🔋</span> Battery Storage <span class="grp-toggle">▾</span></div>
+    <div class="spec-group-body"><div class="spec-grid">
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Chemistry</span><span class="spec-value">Lithium Iron Phosphate (LiFePO₄)</span></div>
+      <div class="spec-row gold-hi" onclick="copyRow(this)"><span class="spec-label">Bank Configuration</span><span class="spec-value"><span class="hi">4 × 3.5 kWh</span> lithium iron phosphate modules</span></div>
+      <div class="spec-row gold-hi" onclick="copyRow(this)"><span class="spec-label">Usable Capacity</span><span class="spec-value"><span class="hi">14.0 kWh</span> at 90% Depth of Discharge</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Runtime</span><span class="spec-value">24 hours — comms + AC + lighting at typical load</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Protection</span><span class="spec-value">Guardian-monitored thermal sensors + BMS</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Full Recharge (from 20%)</span><span class="spec-value">3–4 hours in peak sunlight</span></div>
+    </div></div>
+  </div>
+
+  <div class="spec-group">
+    <div class="spec-group-title" onclick="toggleGroup(this)"><span class="icon">⚙️</span> Inverter System <span class="grp-toggle">▾</span></div>
+    <div class="spec-group-body"><div class="spec-grid">
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Model</span><span class="spec-value">5,000W hybrid inverter — pure sine wave</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Waveform</span><span class="spec-value">Pure sine wave</span></div>
+      <div class="spec-row gold-hi" onclick="copyRow(this)"><span class="spec-label">Efficiency</span><span class="spec-value"><span class="hi">&gt;94%</span> at rated load</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Input Sources</span><span class="spec-value">Battery · grid tie-in · generator · solar passthrough</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Failover Logic</span><span class="spec-value">Seamless grid/generator switchover — soft handover</span></div>
+    </div></div>
+  </div>
+
+  <div class="spec-group">
+    <div class="spec-group-title" onclick="toggleGroup(this)"><span class="icon">🌩️</span> Lightning & Surge Protection <span class="grp-toggle">▾</span></div>
+    <div class="spec-group-body"><div class="spec-grid">
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Air Terminals</span><span class="spec-value">Primary at mast top (0.5–1.0 m above hardware) · canopy ridge ≤7 m apart</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Down Conductors</span><span class="spec-value">Min. 2 × #2 AWG bare copper — mast + rear shelter frame</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Ground Rods</span><span class="spec-value">2–4 × 2.4 m copper-clad · ≥3 m apart · ring bonded</span></div>
+      <div class="spec-row gold-hi" onclick="copyRow(this)"><span class="spec-label">Target Ground Resistance</span><span class="spec-value">≤10 ohms <span class="hi">(≤5Ω preferred)</span></span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">PV Array SPD</span><span class="spec-value">DC Type 2 · 600–1000 VDC</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">AC Output SPD</span><span class="spec-value">Type 1+2 · 230V — protects servers, HVAC, UPS</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">LTE / Coax SPD</span><span class="spec-value">Gas-discharge coax arrestor at mast entry (50Ω)</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">LAN / PoE Ports</span><span class="spec-value">RJ45 DIN-rail SPD on all Guardian + kiosk ports</span></div>
+    </div></div>
+  </div>
+
+  <div class="spec-group">
+    <div class="spec-group-title" onclick="toggleGroup(this)"><span class="icon">❄️</span> Cooling <span class="grp-toggle">▾</span></div>
+    <div class="spec-group-body"><div class="spec-grid">
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Primary Unit</span><span class="spec-value">Mini-split air conditioner · 12,000 BTU/hr · SEER 19</span></div>
+      <div class="spec-row gold-hi" onclick="copyRow(this)"><span class="spec-label">Cooling Margin</span><span class="spec-value"><span class="hi">4× headroom</span> over 2,500–3,000 BTU/hr internal load</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">AC Power Draw</span><span class="spec-value">~850W continuous — within Guardian priority protocol</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Guardian Integration</span><span class="spec-value">Wi-Fi control · temperature-based activation · relay shutdown</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Regional Support</span><span class="spec-value">Regionally stocked across NZ, Australia and Pacific Islands</span></div>
+    </div></div>
+  </div>
+  <div class="source-tag">Source: White Paper — Te Puka Loloa v1.1, April 2025</div>
+</div>
+
+<!-- ═══════════ STRUCTURAL ═══════════ -->
+<div id="panel-structural" class="tab-panel">
+  <div class="stat-band">
+    <div class="stat-cell"><span class="stat-val">10×20 ft</span><span class="stat-lbl">Footprint</span></div>
+    <div class="stat-cell"><span class="stat-val">186 ft²</span><span class="stat-lbl">Usable Floor</span></div>
+    <div class="stat-cell"><span class="stat-val">150 MPH</span><span class="stat-lbl">Wind Rating</span></div>
+    <div class="stat-cell"><span class="stat-val">10 ft</span><span class="stat-lbl">Ceiling Height</span></div>
+    <div class="stat-cell"><span class="stat-val">≤10k lb</span><span class="stat-lbl">Est. Weight</span></div>
+  </div>
+
+  <div class="spec-group">
+    <div class="spec-group-title" onclick="toggleGroup(this)"><span class="icon">🏗️</span> Shelter Structure <span class="grp-toggle">▾</span></div>
+    <div class="spec-group-body"><div class="spec-grid">
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Enclosure Type</span><span class="spec-value">Telecom-grade fiberglass — storm-rated</span></div>
+      <div class="spec-row gold-hi" onclick="copyRow(this)"><span class="spec-label">Footprint</span><span class="spec-value"><span class="hi">10 ft × 20 ft</span> (3.05 m × 6.10 m)</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Ceiling Height</span><span class="spec-value">10 ft (3.05 m) clear vertical</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Usable Floor Area</span><span class="spec-value">~186 ft² (~17.3 m²) after wall offsets</span></div>
+      <div class="spec-row gold-hi" onclick="copyRow(this)"><span class="spec-label">Wind Rating</span><span class="spec-value"><span class="hi">150 MPH</span> design wind speed</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Insulation</span><span class="spec-value">R-19 or better closed-cell foam — floor, walls, ceiling</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Roof</span><span class="spec-value">Pitched with rubberized radiant barrier coating</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Exterior Finish</span><span class="spec-value">Powder-coated beige — corrosion resistant</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Flooring</span><span class="spec-value">Industrial vinyl with sealed seams</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Lighting</span><span class="spec-value">3 × 4-foot LED fixtures with wall switch</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Door</span><span class="spec-value">36 in × 84 in swing or slide — secure locking</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Wall Thickness</span><span class="spec-value">~3 in (7.6 cm) composite with insulation</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Mounting</span><span class="spec-value">Integrated skid base or bolt-down anchor eyelets</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Transport</span><span class="spec-value">Flat-rack or high-cube container compatible</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Estimated Weight</span><span class="spec-value">≤10,000 lbs (~4,535 kg) fully configured</span></div>
+    </div></div>
+  </div>
+
+  <div class="spec-group">
+    <div class="spec-group-title" onclick="toggleGroup(this)"><span class="icon">🌧️</span> Rainwater System <span class="grp-toggle">▾</span></div>
+    <div class="spec-group-body"><div class="spec-grid">
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Collection</span><span class="spec-value">Canopy guttering → underground cistern</span></div>
+      <div class="spec-row gold-hi" onclick="copyRow(this)"><span class="spec-label">Storage Capacity</span><span class="spec-value"><span class="hi">1,500L</span> primary rainwater tank</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Garden Irrigation</span><span class="spec-value">Overflow routed to steward garden raised beds</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Canopy Overhang</span><span class="spec-value">24–30 in (0.6–0.75 m) — shade + catchment</span></div>
+    </div></div>
+  </div>
+
+  <div class="spec-group">
+    <div class="spec-group-title" onclick="toggleGroup(this)"><span class="icon">📏</span> Antenna Mast — Retractable Steel Series <span class="grp-toggle">▾</span></div>
+    <div class="spec-group-body">
+      <table class="spec-table" id="mastTable">
+        <thead><tr>
+          <th class="sortable" onclick="sortTable('mastTable',0)">Model <span class="s-arrow">↕</span></th>
+          <th class="sortable" onclick="sortTable('mastTable',1)">Extended <span class="s-arrow">↕</span></th>
+          <th>Retracted</th><th>Max Load</th><th>Wind Rated</th><th>Weight</th>
+        </tr></thead>
+        <tbody>
+          <tr onclick="copyRow(this)"><td>ST5-9</td><td>9 m (29.5 ft)</td><td>2.3 m</td><td>35 kg</td><td>120 kph</td><td>~30.5 kg</td></tr>
+          <tr onclick="copyRow(this)"><td>ST5-12</td><td>12 m (39.4 ft)</td><td>2.9 m</td><td>35 kg</td><td>120 kph</td><td>~35 kg</td></tr>
+        </tbody>
+      </table>
+      <div class="note-box" style="margin-top:14px;"><strong>Storm Protocol:</strong> On Guardian storm alert, mast retracts to 2.3–2.9 m, winch locks, guy lines secured. Top equipment stowed inside. Mast position monitored via MQTT sensor.</div>
+    </div>
+  </div>
+  <div class="source-tag">Source: White Paper — Te Puka Loloa v1.1, April 2025</div>
+</div>
+
+<!-- ═══════════ COMMS ═══════════ -->
+<div id="panel-comms" class="tab-panel">
+  <div class="stat-band">
+    <div class="stat-cell"><span class="stat-val">4</span><span class="stat-lbl">Redundant Layers</span></div>
+    <div class="stat-cell"><span class="stat-val">Private</span><span class="stat-lbl">LTE Core</span></div>
+    <div class="stat-cell"><span class="stat-val">Open5GS</span><span class="stat-lbl">LTE Stack</span></div>
+    <div class="stat-cell"><span class="stat-val">Vaka</span><span class="stat-lbl">Fiber Backbone</span></div>
+    <div class="stat-cell"><span class="stat-val">LEO Sat</span><span class="stat-lbl">Satellite Failover</span></div>
+  </div>
+
+  <div class="note-box gold" style="margin-bottom:28px;">
+    <strong>Sovereignty Note:</strong> By running a locally-hosted private LTE core, Tuvalu retains full control of call routing, data sovereignty, and emergency override — without depending on commercial carriers. No foreign operator can throttle, surveil, or disconnect the network. In a crisis, the island stays online on its own terms. <em>This is not just a technical choice. It is a sovereign one.</em>
+  </div>
+
+  <div class="spec-group">
+    <div class="spec-group-title" onclick="toggleGroup(this)"><span class="icon">📶</span> Private LTE Core <span class="grp-toggle">▾</span></div>
+    <div class="spec-group-body"><div class="spec-grid">
+      <div class="spec-row gold-hi" onclick="copyRow(this)"><span class="spec-label">LTE Stack</span><span class="spec-value"><span class="hi">Open-source EPC</span> — fully local, sovereign-hosted</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Antenna Config</span><span class="spec-value">Tri-sector array — 120° coverage per sector</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Firewall</span><span class="spec-value">Open-source firewall — SIP/LTE compatible</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">VoIP Gateway</span><span class="spec-value">Open-source VoIP gateway — SIP routing + local failover</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Sovereignty</span><span class="spec-value">Full call routing control — no foreign carrier dependency</span></div>
+    </div></div>
+  </div>
+
+  <div class="spec-group">
+    <div class="spec-group-title" onclick="toggleGroup(this)"><span class="icon">🌐</span> Wi-Fi Mesh & Backhaul <span class="grp-toggle">▾</span></div>
+    <div class="spec-group-body"><div class="spec-grid">
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Wi-Fi Platform</span><span class="spec-value">Multi-band enterprise mesh — indoor + outdoor access points</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Switch</span><span class="spec-value">Managed PoE switch with SFP uplinks</span></div>
+      <div class="spec-row gold-hi" onclick="copyRow(this)"><span class="spec-label">Primary Backhaul</span><span class="spec-value"><span class="hi">Vaka Cable</span> — international submarine fiber backbone</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Fiber Readiness</span><span class="spec-value">1U splice tray · LC/SC · SFP+ (10G) / SFP28 (25G)</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Satellite Failover</span><span class="spec-value">LEO satellite uplink — auto-tracking, weather-adaptive</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Microwave Bridge</span><span class="spec-value">Inter-island microwave bridge (point-to-point)</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">VLAN Isolation</span><span class="spec-value">Public / civic / admin network separation</span></div>
+    </div></div>
+  </div>
+
+  <div class="spec-group">
+    <div class="spec-group-title" onclick="toggleGroup(this)"><span class="icon">📻</span> VHF / UHF Emergency Radio <span class="grp-toggle">▾</span></div>
+    <div class="spec-group-body">
+      <div class="spec-grid">
+        <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">VHF Band</span><span class="spec-value">156–162 MHz — marine, coastal, port comms</span></div>
+        <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">UHF Band</span><span class="spec-value">400–470 MHz — land mobile, building penetration</span></div>
+        <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Recommended Radio</span><span class="spec-value">Industrial-grade VHF/UHF fixed-base radio units</span></div>
+      </div>
+      <table class="spec-table" style="margin-top:14px;" id="antennaTable">
+        <thead><tr>
+          <th class="sortable" onclick="sortTable('antennaTable',0)">Antenna <span class="s-arrow">↕</span></th>
+          <th>Freq Bands</th><th>Gain</th><th>Max Power</th><th>Wind</th><th>Length</th>
+        </tr></thead>
+        <tbody>
+          <tr onclick="copyRow(this)"><td>Dual-band VHF/UHF Antenna (compact)</td><td>144 MHz VHF / 430 MHz UHF</td><td>3.5 dBi / 6.0 dBi</td><td>200W</td><td>134 kph</td><td>1.5 m</td></tr>
+          <tr onclick="copyRow(this)"><td>High-gain VHF Antenna (extended)</td><td>144 MHz VHF</td><td>9.0 dBi</td><td>200W</td><td>120 kph</td><td>3.6 m</td></tr>
+        </tbody>
+      </table>
+      <div class="note-box"><strong>Storm Mode:</strong> VHF/UHF stays ON (push broadcast only) through Tier 1 and Tier 2 — lowest power of any comms layer, last-resort civic alert channel.</div>
+    </div>
+  </div>
+
+  <div class="spec-group">
+    <div class="spec-group-title" onclick="toggleGroup(this)"><span class="icon">🌡️</span> Environmental Monitoring <span class="grp-toggle">▾</span></div>
+    <div class="spec-group-body"><div class="spec-grid">
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Weather Station</span><span class="spec-value">Professional weather station — wind, temperature, pressure, rainfall</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Salt & Corrosion</span><span class="spec-value">Sensors trigger Guardian maintenance alerts</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Air Quality</span><span class="spec-value">PM2.5 / CO2 sensor — integrated with Guardian</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Tide Sensor</span><span class="spec-value">Ultrasonic or pressure-based — shoreline deployments</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Indoor Sensors</span><span class="spec-value">Smoke · intrusion · temperature · humidity</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Data Routing</span><span class="spec-value">MQTT → Guardian dashboard → Arbor alerts</span></div>
+    </div></div>
+  </div>
+  <div class="source-tag">Source: White Paper — Te Puka Loloa v1.1, April 2025</div>
+</div>
+
+<!-- ═══════════ COMPUTE ═══════════ -->
+<div id="panel-compute" class="tab-panel">
+  <div class="stat-band">
+    <div class="stat-cell"><span class="stat-val" data-count="3" data-suffix="">–</span><span class="stat-lbl">Edge Servers</span></div>
+    <div class="stat-cell"><span class="stat-val">42U</span><span class="stat-lbl">Rack</span></div>
+    <div class="stat-cell"><span class="stat-val">Xeon</span><span class="stat-lbl">CPU Class</span></div>
+    <div class="stat-cell"><span class="stat-val">32 GB</span><span class="stat-lbl">RAM / Node</span></div>
+    <div class="stat-cell"><span class="stat-val" data-count="710" data-suffix="W">–</span><span class="stat-lbl">Typical Draw</span></div>
+  </div>
+
+  <div class="spec-group">
+    <div class="spec-group-title" onclick="toggleGroup(this)"><span class="icon">🖥️</span> Core Rack System <span class="grp-toggle">▾</span></div>
+    <div class="spec-group-body"><div class="spec-grid">
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Rack</span><span class="spec-value">42U enclosed — 600mm (W) × 1000mm (D) marine-grade aluminum</span></div>
+      <div class="spec-row gold-hi" onclick="copyRow(this)"><span class="spec-label">Edge Servers</span><span class="spec-value"><span class="hi">3 × ruggedised servers</span> — Xeon-class, 32GB RAM, 1TB SSD, fanless</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Backup Node</span><span class="spec-value">1 × 1U dedicated — rotating snapshots, Guardian Mirror Vault</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Component Rating</span><span class="spec-value">IP65 — conformal coating, corrosion-resistant</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">PDU</span><span class="spec-value">1U Smart PDU — 8–12 outlets, surge protected, Guardian-compatible</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">UPS</span><span class="spec-value">2U–3U rack LFP — 1.5–3 hr runtime at 3–4 kW, SNMP monitoring</span></div>
+    </div></div>
+  </div>
+
+  <div class="spec-group">
+    <div class="spec-group-title" onclick="toggleGroup(this)"><span class="icon">💻</span> VM Layout — Node 1: EPC & Core Services <span class="grp-toggle">▾</span></div>
+    <div class="spec-group-body">
+      <table class="spec-table"><thead><tr><th>VM</th><th>Role</th><th>vCPU</th><th>RAM</th></tr></thead>
+      <tbody>
+        <tr onclick="copyRow(this)"><td>vm_open5gs</td><td>Sovereign LTE Core — MME, HSS, SGW, PGW</td><td>1</td><td>2 GB</td></tr>
+        <tr onclick="copyRow(this)"><td>vm_pfsense</td><td>Firewall, NAT, DHCP, SIP passthrough</td><td>1</td><td>1 GB</td></tr>
+        <tr onclick="copyRow(this)"><td>vm_dnsntp</td><td>Bind9 DNS + NTPd — civic time sync</td><td>1</td><td>512 MB</td></tr>
+        <tr onclick="copyRow(this)"><td>vm_backup-agent</td><td>Sync agent to central mirror vault</td><td>1</td><td>512 MB</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+
+  <div class="spec-group">
+    <div class="spec-group-title" onclick="toggleGroup(this)"><span class="icon">💬</span> VM Layout — Node 2: VoIP & Guardian <span class="grp-toggle">▾</span></div>
+    <div class="spec-group-body">
+      <table class="spec-table"><thead><tr><th>VM</th><th>Role</th><th>vCPU</th><th>RAM</th></tr></thead>
+      <tbody>
+        <tr onclick="copyRow(this)"><td>vm_freeswitch</td><td>Open-source VoIP + SIP Gateway</td><td>1</td><td>1.5 GB</td></tr>
+        <tr onclick="copyRow(this)"><td>vm_guardian-core</td><td>Guardian Beacon — logs, alerts, ethics sync</td><td>2</td><td>2 GB</td></tr>
+        <tr onclick="copyRow(this)"><td>vm_mqtt</td><td>MQTT broker — sensor + heartbeat routing</td><td>1</td><td>512 MB</td></tr>
+        <tr onclick="copyRow(this)"><td>vm_api-proxy</td><td>Reverse proxy — internal-only access routing</td><td>1</td><td>512 MB</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+
+  <div class="spec-group">
+    <div class="spec-group-title" onclick="toggleGroup(this)"><span class="icon">📁</span> VM Layout — Node 3: Logging & Dev Tools <span class="grp-toggle">▾</span></div>
+    <div class="spec-group-body">
+      <table class="spec-table"><thead><tr><th>VM</th><th>Role</th><th>vCPU</th><th>RAM</th></tr></thead>
+      <tbody>
+        <tr onclick="copyRow(this)"><td>vm_syslog</td><td>Central syslog — log aggregation server</td><td>1</td><td>1.5 GB</td></tr>
+        <tr onclick="copyRow(this)"><td>vm_deploy</td><td>Version control + automation + remote dev tools (OTA)</td><td>1</td><td>1 GB</td></tr>
+        <tr onclick="copyRow(this)"><td>vm_dash-mini</td><td>Lightweight Guardian public dashboard</td><td>1</td><td>1 GB</td></tr>
+        <tr onclick="copyRow(this)"><td>vm_reserve</td><td>Hot-swap spare — diagnostics / temp services</td><td>1</td><td>512 MB</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+
+  <div class="spec-group">
+    <div class="spec-group-title" onclick="toggleGroup(this)"><span class="icon">🔥</span> Thermal Load — 42U Rack <span class="grp-toggle">▾</span></div>
+    <div class="spec-group-body">
+      <table class="spec-table" id="thermalTable">
+        <thead><tr>
+          <th class="sortable" onclick="sortTable('thermalTable',0)">Component <span class="s-arrow">↕</span></th>
+          <th>Qty</th>
+          <th class="sortable" onclick="sortTable('thermalTable',2)">Power Draw <span class="s-arrow">↕</span></th>
+          <th>Heat Output</th>
+        </tr></thead>
+        <tbody>
+          <tr onclick="copyRow(this)"><td>Ruggedised Edge Server</td><td>3</td><td>195W (65W each)</td><td>~665 BTU/hr</td></tr>
+          <tr onclick="copyRow(this)"><td>Backup Server</td><td>1</td><td>65W</td><td>~222 BTU/hr</td></tr>
+          <tr onclick="copyRow(this)"><td>Network Controller + 3× PoE Switches</td><td>4</td><td>~200W total</td><td>~682 BTU/hr</td></tr>
+          <tr onclick="copyRow(this)"><td>UHF/VHF Radio Unit</td><td>1</td><td>~40W</td><td>~136 BTU/hr</td></tr>
+          <tr onclick="copyRow(this)"><td>Satellite Terminal</td><td>1</td><td>~65W</td><td>~222 BTU/hr</td></tr>
+          <tr onclick="copyRow(this)"><td>Rack-mount UPS + Battery Module</td><td>2</td><td>~60W standby</td><td>~205 BTU/hr</td></tr>
+          <tr onclick="copyRow(this)"><td>Open-source Firewall Gateways</td><td>2</td><td>~40W total</td><td>~137 BTU/hr</td></tr>
+          <tr onclick="copyRow(this)"><td>Rack Fan (Guardian-controlled)</td><td>1</td><td>~20W</td><td>~68 BTU/hr</td></tr>
+          <tr onclick="copyRow(this)"><td>Passive / Other (sensors, LEDs)</td><td>—</td><td>~25W</td><td>~85 BTU/hr</td></tr>
+        </tbody>
+      </table>
+      <div class="note-box"><strong>Rack Total:</strong> ~710–750W draw · ~2,400–2,560 BTU/hr &nbsp;|&nbsp; <strong>Full System:</strong> 900–1,100W typical · ~3,050–3,850 BTU/hr combined</div>
+    </div>
+  </div>
+  <div class="source-tag">Source: White Paper — Te Puka Loloa v1.1, April 2025</div>
+</div>
+
+<!-- ═══════════ CIVIC ═══════════ -->
+<div id="panel-civic" class="tab-panel">
+  <div class="spec-group">
+    <div class="spec-group-title" onclick="toggleGroup(this)"><span class="icon">🖥️</span> Public Kiosk & Terminals <span class="grp-toggle">▾</span></div>
+    <div class="spec-group-body"><div class="spec-grid">
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Public Kiosk</span><span class="spec-value">Weatherproof — touch and/or voice input</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Voice Interaction</span><span class="spec-value">Local speech module — Tuvaluan language, Guardian-integrated</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">QR & Visual Codes</span><span class="spec-value">Alerts, stewardship tasks, ceremonial notices</span></div>
+      <div class="spec-row gold-hi" onclick="copyRow(this)"><span class="spec-label">Arbor Integration</span><span class="spec-value"><span class="hi">Direct link</span> to each citizen's Arbor account</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Status Displays</span><span class="spec-value">LED indicators for power, network, water, climate</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Steward Terminal</span><span class="spec-value">Indoor — Guardian tasks, VM training, system logs</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Accessibility</span><span class="spec-value">Ground-level entry, wide door, low-mount panels</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Storm Emergency Mode</span><span class="spec-value">Auto-switch to emergency guidance on Guardian storm alert</span></div>
+    </div></div>
+  </div>
+  <div class="spec-group">
+    <div class="spec-group-title" onclick="toggleGroup(this)"><span class="icon">🌺</span> Cultural & Civic Space <span class="grp-toggle">▾</span></div>
+    <div class="spec-group-body"><div class="spec-grid">
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Activation Ceremony</span><span class="spec-value">"Ceremony of First Activation" — music, community participation, civic oath</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Cultural Motifs</span><span class="spec-value">Coral, fatupa (stone), stylised shell patterns engraved on kiosk</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Civic Ritual Niche</span><span class="spec-value">Optional interior niche — symbolic tools, community board, ceremonial display</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Community Cinema</span><span class="spec-value">Sail-style screen + Guardian-managed power scheduling for weekend movie nights</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Steward's Garden</span><span class="spec-value">Edible/medicinal plantings, raised beds, shaded bench, rainwater-irrigated</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Motion Lighting & Sound</span><span class="spec-value">Motion-activated lighting + soft audio feedback guides public interaction</span></div>
+    </div></div>
+  </div>
+  <div class="spec-group">
+    <div class="spec-group-title" onclick="toggleGroup(this)"><span class="icon">🔗</span> Guardian & Arbor Integration <span class="grp-toggle">▾</span></div>
+    <div class="spec-group-body"><div class="spec-grid">
+      <div class="spec-row gold-hi" onclick="copyRow(this)"><span class="spec-label">Guardian Role</span><span class="spec-value"><span class="hi">Locally governed AI</span> — energy, security, comms, climate</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Predictive Maintenance</span><span class="spec-value">Fault identification before failure — Arbor steward alerts</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Community Override</span><span class="spec-value">Collective reprioritisation via Guardian Civic Panels or Arbor</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Transparency</span><span class="spec-value">Households query Arbor for live performance + usage data</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Self-Islanding</span><span class="spec-value">Automatic fault isolation — maintains partial functionality</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">LED Status Ring</span><span class="spec-value">Green (operational) · Amber (low power) · Red (fault)</span></div>
+    </div></div>
+  </div>
+  <div class="source-tag">Source: White Paper — Te Puka Loloa v1.1, April 2025</div>
+</div>
+
+<!-- ═══════════ STORM ═══════════ -->
+<div id="panel-storm" class="tab-panel">
+  <div class="note-box coral" style="margin-bottom:28px;">
+    <strong>Auto-Activation Triggers:</strong> Battery SOC &lt; 35% · No solar input &gt;30 min · Grid connection lost · Manual override via Arbor or emergency steward. Guardian acts immediately — no human instruction required.
+  </div>
+
+  <div class="tier-block" id="t1">
+    <div class="tier-header critical" onclick="toggleTier('t1')">🔴 &nbsp;Tier 1 — Critical Comms <small style="opacity:0.55;font-size:10px;margin-left:6px;">(Always On Until Full Shutdown)</small><span class="tier-toggle">▾</span></div>
+    <div class="tier-body">
+      <div class="tier-row-item"><span class="tier-component">LTE Repeater + Relay</span><span class="tier-purpose">Island-wide emergency connectivity</span><span class="tier-status s-on">ON</span></div>
+      <div class="tier-row-item"><span class="tier-component">Guardian Core Server</span><span class="tier-purpose">Open5GS, routing, Guardian edge</span><span class="tier-status s-on">ON</span></div>
+      <div class="tier-row-item"><span class="tier-component">Primary Air Conditioning</span><span class="tier-purpose">Passive cooling for electronics</span><span class="tier-status s-lim">THROTTLED</span></div>
+      <div class="tier-row-item"><span class="tier-component">Sovereign Firewall</span><span class="tier-purpose">Security + routing for uplinks</span><span class="tier-status s-on">ON</span></div>
+      <div class="tier-row-item"><span class="tier-component">Satellite Uplink Antenna</span><span class="tier-purpose">Off-island network uplink</span><span class="tier-status s-on">ON</span></div>
+      <div class="tier-row-item"><span class="tier-component">Microwave Point-to-Point Link</span><span class="tier-purpose">Local inter-node mesh relay</span><span class="tier-status s-on">ON</span></div>
+    </div>
+  </div>
+
+  <div class="tier-block" id="t2">
+    <div class="tier-header priority" onclick="toggleTier('t2')">🟡 &nbsp;Tier 2 — Priority Services <small style="opacity:0.55;font-size:10px;margin-left:6px;">(Solar Available Only)</small><span class="tier-toggle">▾</span></div>
+    <div class="tier-body">
+      <div class="tier-row-item"><span class="tier-component">Fiber Uplink + SFP</span><span class="tier-purpose">High-speed backbone</span><span class="tier-status s-off">DISABLED</span></div>
+      <div class="tier-row-item"><span class="tier-component">Local Wi-Fi (Admin Only)</span><span class="tier-purpose">For responders near node</span><span class="tier-status s-lim">LIMITED</span></div>
+      <div class="tier-row-item"><span class="tier-component">Environmental Sensors</span><span class="tier-purpose">Logging only — deferred TX</span><span class="tier-status s-lim">LOW-POWER LOG</span></div>
+      <div class="tier-row-item"><span class="tier-component">Interior Cameras</span><span class="tier-purpose">Motion-triggered only</span><span class="tier-status s-lim">MOTION ONLY</span></div>
+      <div class="tier-row-item"><span class="tier-component">UHF/VHF Radio</span><span class="tier-purpose">Civic emergency broadcast</span><span class="tier-status s-on">ON (Push Only)</span></div>
+    </div>
+  </div>
+
+  <div class="tier-block" id="t3">
+    <div class="tier-header nonessential" onclick="toggleTier('t3')">⚫ &nbsp;Tier 3 — Non-Essential <small style="opacity:0.55;font-size:10px;margin-left:6px;">(Cut First)</small><span class="tier-toggle">▾</span></div>
+    <div class="tier-body">
+      <div class="tier-row-item"><span class="tier-component">Public Wi-Fi (Mesh + Guest)</span><span class="tier-purpose">Open community access</span><span class="tier-status s-off">OFF</span></div>
+      <div class="tier-row-item"><span class="tier-component">Secondary AC Unit</span><span class="tier-purpose">Redundant cooling</span><span class="tier-status s-off">OFF</span></div>
+      <div class="tier-row-item"><span class="tier-component">Edge Storage + Projector</span><span class="tier-purpose">Media playback</span><span class="tier-status s-off">OFF</span></div>
+      <div class="tier-row-item"><span class="tier-component">LED Strip Lighting</span><span class="tier-purpose">Aesthetic / indicator</span><span class="tier-status s-lim">DIM</span></div>
+      <div class="tier-row-item"><span class="tier-component">Non-Essential Cameras</span><span class="tier-purpose">Surveillance (non-critical)</span><span class="tier-status s-off">OFF</span></div>
+    </div>
+  </div>
+
+  <div class="note-box"><strong>Recovery Logic:</strong> SOC &gt;60% → Guardian gradually restores Tier 2. Tier 3 stays offline until full recovery or steward override via Arbor. Full event log feeds the continuous improvement loop.</div>
+  <div class="source-tag">Source: White Paper — Te Puka Loloa v1.1, April 2025</div>
+</div>
+
+<!-- ═══════════ STEWARDSHIP ═══════════ -->
+<div id="panel-stewardship" class="tab-panel">
+  <div class="stat-band">
+    <div class="stat-cell"><span class="stat-val">2–4</span><span class="stat-lbl">Stewards / Node</span></div>
+    <div class="stat-cell"><span class="stat-val">3</span><span class="stat-lbl">Program Phases</span></div>
+    <div class="stat-cell"><span class="stat-val">3 mo</span><span class="stat-lbl">Phase 1</span></div>
+    <div class="stat-cell"><span class="stat-val">6–12 mo</span><span class="stat-lbl">Phase 2</span></div>
+    <div class="stat-cell"><span class="stat-val">Cert.</span><span class="stat-lbl">Industry Certifications</span></div>
+  </div>
+
+  <div class="note-box gold" style="margin-bottom:28px;"><strong>Te Kaukau o te Atamai — Circle of Wisdom:</strong> Empower local youth as full-stack infrastructure stewards — replacing college-only paths with vocational + technical mastery embedded in Tuvaluan cultural identity and civic ritual.</div>
+
+  <div class="spec-group">
+    <div class="spec-group-title" onclick="toggleGroup(this)"><span class="icon">📋</span> Phase 1 — Initiation (3 months) <span class="grp-toggle">▾</span></div>
+    <div class="spec-group-body">
+      <table class="spec-table"><thead><tr><th>Module</th><th>Content</th></tr></thead>
+      <tbody>
+        <tr onclick="copyRow(this)"><td>Digital Stewardship 101</td><td>Software, hardware, Guardian, Arbor, MQTT, ritual duties</td></tr>
+        <tr onclick="copyRow(this)"><td>Comms Infrastructure</td><td>Networking basics, LTE, Wi-Fi, UHF/VHF radio</td></tr>
+        <tr onclick="copyRow(this)"><td>Power Systems</td><td>Electrical basics, solar, battery, MPPT, Guardian power priority</td></tr>
+        <tr onclick="copyRow(this)"><td>Compute Infrastructure</td><td>Servers, operating systems, virtual machines</td></tr>
+        <tr onclick="copyRow(this)"><td>Ritual Tech</td><td>Waste bins, kiosks, Vai Mana maintenance</td></tr>
+        <tr onclick="copyRow(this)"><td>Tools & Safety</td><td>Multimeter use, grounding, fall safety</td></tr>
+      </tbody></table>
+      <div class="note-box"><strong>Milestone:</strong> Vest, tool pouch, and Guardian steward glyph awarded in community ceremony.</div>
+    </div>
+  </div>
+
+  <div class="spec-group">
+    <div class="spec-group-title" onclick="toggleGroup(this)"><span class="icon">🔧</span> Phase 2 — Apprenticeship (6–12 months) <span class="grp-toggle">▾</span></div>
+    <div class="spec-group-body">
+      <table class="spec-table"><thead><tr><th>Focus Pathway</th><th>Example Tasks</th></tr></thead>
+      <tbody>
+        <tr onclick="copyRow(this)"><td>Communications</td><td>Install APs, configure switches, test LTE</td></tr>
+        <tr onclick="copyRow(this)"><td>Energy Systems</td><td>MPPT setup, cable terminations, charge controller configuration</td></tr>
+        <tr onclick="copyRow(this)"><td>Rack & Systems Admin</td><td>Server configuration, PXE boot, failover testing</td></tr>
+        <tr onclick="copyRow(this)"><td>Environmental Monitoring</td><td>Install sensors, MQTT checks, waterproofing</td></tr>
+        <tr onclick="copyRow(this)"><td>Public UX & Civic Tools</td><td>Kiosk logic, Guardian feedback, camera systems</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+
+  <div class="spec-group">
+    <div class="spec-group-title" onclick="toggleGroup(this)"><span class="icon">🏆</span> Phase 3 — Certification & Specialisation <span class="grp-toggle">▾</span></div>
+    <div class="spec-group-body">
+      <table class="spec-table"><thead><tr><th>Program</th><th>Credential or Output</th></tr></thead>
+      <tbody>
+        <tr onclick="copyRow(this)"><td>IT Fundamentals Certification</td><td>IT fundamentals — open-book, offline-first study</td></tr>
+        <tr onclick="copyRow(this)"><td>Solar & Battery Systems</td><td>Hands-on solar charge controller + inverter configuration</td></tr>
+        <tr onclick="copyRow(this)"><td>Networking Fundamentals</td><td>LTE, routing, VLAN setup using managed network hardware</td></tr>
+        <tr onclick="copyRow(this)"><td>Guardian Developer Path</td><td>Node/Arbor scripting, data formatting</td></tr>
+        <tr onclick="copyRow(this)"><td>Capstone Ceremony</td><td>"My Island's System" — public ritual presentation</td></tr>
+      </tbody></table>
+      <div class="note-box"><strong>Graduation:</strong> Guardian cloak pin, system steward certificate, and public naming — anchored in cultural continuity, not just technical credential.</div>
+    </div>
+  </div>
+
+  <div class="spec-group">
+    <div class="spec-group-title" onclick="toggleGroup(this)"><span class="icon">📅</span> Daily Steward Duties <span class="grp-toggle">▾</span></div>
+    <div class="spec-group-body"><div class="spec-grid">
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Signal Tests</span><span class="spec-value">Daily LTE + Wi-Fi + VHF/UHF verification</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Firmware Updates</span><span class="spec-value">Scheduled over-the-air updates via Guardian — rollback safeguards</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Mast Inspection</span><span class="spec-value">Visual check + lightning strike log review</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Civic Broadcast Tests</span><span class="spec-value">Radio + kiosk relay verification</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Guardian Log Review</span><span class="spec-value">System status, MQTT health, alert queue</span></div>
+      <div class="spec-row" onclick="copyRow(this)"><span class="spec-label">Garden Care</span><span class="spec-value">Steward-maintained plantings — rainwater-irrigated</span></div>
+    </div></div>
+  </div>
+  <div class="source-tag">Source: White Paper — Te Puka Loloa v1.1, April 2025</div>
+</div>
+
+</div><!-- /page -->
+
+<!-- TOAST -->
+<div class="copy-toast" id="toast">Copied to clipboard</div>
+
+<script>
+/* ── WIX AUTO-HEIGHT ── */
+function notifyHeight() {
+  const page = document.querySelector('.page');
+  const h = page ? page.getBoundingClientRect().bottom + 24 : document.documentElement.scrollHeight;
+  window.parent.postMessage({ type: 'wix-height', height: Math.ceil(h) }, '*');
+}
+
+/* ── TABS ── */
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  btn.classList.add('active');
+  setTimeout(() => { animateCounters(); animateProgressBars(); notifyHeight(); }, 60);
+  resetSearch();
+}
+
+/* ── COLLAPSIBLE GROUPS ── */
+function toggleGroup(el) {
+  el.closest('.spec-group').classList.toggle('collapsed');
+  setTimeout(notifyHeight, 460);
+}
+
+/* ── COLLAPSIBLE TIERS ── */
+function toggleTier(id) {
+  document.getElementById(id).classList.toggle('collapsed');
+  setTimeout(notifyHeight, 460);
+}
+
+/* ── ANIMATED COUNTERS ── */
+function animateCounters() {
+  document.querySelector('.tab-panel.active').querySelectorAll('[data-count]').forEach(el => {
+    const target = parseFloat(el.dataset.count);
+    const suffix = el.dataset.suffix || '';
+    const isInt  = Number.isInteger(target);
+    const dur    = 900;
+    const start  = performance.now();
+    function tick(now) {
+      const t = Math.min((now - start) / dur, 1);
+      const e = 1 - Math.pow(1 - t, 3);
+      el.textContent = (isInt ? Math.round(target * e) : (target * e).toFixed(1)) + suffix;
+      if (t < 1) requestAnimationFrame(tick);
+      else el.textContent = (isInt ? target : target.toFixed(1)) + suffix;
+    }
+    requestAnimationFrame(tick);
+  });
+}
+
+/* ── PROGRESS BARS ── */
+function animateProgressBars() {
+  document.querySelector('.tab-panel.active').querySelectorAll('.progress-fill[data-w]').forEach(bar => {
+    bar.style.width = '0%';
+    setTimeout(() => { bar.style.width = bar.dataset.w + '%'; }, 120);
+  });
+}
+
+/* ── COPY ROW ── */
+function copyRow(el) {
+  const label = el.querySelector('.spec-label')?.textContent?.trim() || '';
+  const value = el.querySelector('.spec-value, td:nth-child(2)')?.textContent?.trim() || el.textContent.trim();
+  const text  = label ? `${label}: ${value}` : value;
+  navigator.clipboard?.writeText(text).then(() => {
+    const t = document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 1600);
+  });
+}
+
+/* ── LIVE SEARCH ── */
+const searchInput = document.getElementById('searchInput');
+const searchMeta  = document.getElementById('searchMeta');
+
+function resetSearch() {
+  searchInput.value = '';
+  applySearch('');
+}
+
+searchInput.addEventListener('input', e => applySearch(e.target.value.toLowerCase().trim()));
+
+function applySearch(q) {
+  const panel = document.querySelector('.tab-panel.active');
+  const rows  = [...panel.querySelectorAll('.spec-row, .spec-table tbody tr')];
+  let count = 0;
+
+  rows.forEach(row => {
+    const text = row.textContent.toLowerCase();
+    const show = !q || text.includes(q);
+    row.classList.toggle('hidden', !show);
+    if (show) count++;
+    // highlight in spec-value or td cells
+    if (q) {
+      row.querySelectorAll('.spec-value, td').forEach(cell => {
+        if (cell.children.length === 0) {
+          const raw = cell.textContent;
+          const regex = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
+          cell.innerHTML = raw.replace(regex, '<mark>$1</mark>');
+        }
+      });
+    } else {
+      row.querySelectorAll('mark').forEach(m => m.replaceWith(m.textContent));
+    }
+  });
+
+  // hide empty groups
+  panel.querySelectorAll('.spec-group').forEach(g => {
+    const specRows = [...g.querySelectorAll('.spec-row, .spec-table tbody tr')];
+    const allHidden = specRows.length > 0 && specRows.every(r => r.classList.contains('hidden'));
+    g.classList.toggle('grp-hide', !!(q && allHidden));
+    if (q && !allHidden) g.classList.remove('collapsed');
+  });
+
+  searchMeta.textContent = q ? `${count} result${count!==1?'s':''}` : '';
+  searchMeta.classList.toggle('active', !!q);
+}
+
+/* ── TABLE SORT ── */
+function sortTable(id, col) {
+  const table = document.getElementById(id);
+  if (!table) return;
+  const tbody = table.querySelector('tbody');
+  const rows  = [...tbody.querySelectorAll('tr')];
+  const th    = [...table.querySelectorAll('th')][col];
+  const asc   = th.dataset.sort !== 'asc';
+
+  table.querySelectorAll('.s-arrow').forEach(a => { a.className = 's-arrow'; });
+  const arrow = th.querySelector('.s-arrow');
+  if (arrow) arrow.className = 's-arrow ' + (asc ? 'asc' : 'desc');
+  th.dataset.sort = asc ? 'asc' : 'desc';
+
+  rows.sort((a, b) => {
+    const av = a.cells[col]?.textContent?.trim() || '';
+    const bv = b.cells[col]?.textContent?.trim() || '';
+    const an = parseFloat(av), bn = parseFloat(bv);
+    if (!isNaN(an) && !isNaN(bn)) return asc ? an-bn : bn-an;
+    return asc ? av.localeCompare(bv) : bv.localeCompare(av);
+  });
+  rows.forEach(r => tbody.appendChild(r));
+}
+
+/* ── INIT ── */
+window.addEventListener('DOMContentLoaded', () => {
+  animateCounters();
+  animateProgressBars();
+  // Initial height report + observe any future size changes
+  notifyHeight();
+  new ResizeObserver(notifyHeight).observe(document.documentElement);
+});
+</script>
+</body>
+</html>
